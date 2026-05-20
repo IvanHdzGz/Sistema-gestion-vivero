@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard - Sistema Vivero</title>
+        <link rel="stylesheet" th:href="@{/styles/styles.css}" />
+    </head>
+    <body>
+        <div class="main-layout">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-icon">
+                        <img th:src="@{/img/flor_loto.png}" alt="Flor de Loto" width="20" height="20" />
+                    </div>
+                    <div class="sidebar-title">
+                        <h2>Vivero</h2>
+                        <p class="sidebar-subtitle">Sistema de Gestión</p>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li>
+                            <a th:href="@{/dashboard}" class="active">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/clientes}">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                Clientes
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/pedidos}">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                </svg>
+                                Pedidos
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/productos}">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                                Inventario
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/proveedores}">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                <rect x="1" y="3" width="15" height="13"></rect>
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                </svg>
+                                Proveedores
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <form th:action="@{/logout}" method="POST" id="logoutForm" style="display: none;"></form>
+                    <button class="btn-logout" onclick="document.getElementById('logoutForm').submit();">
+                        <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <div class="mb-6">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p style="color: #6b7280">
+                        Bienvenido al sistema de gestión del vivero
+                    </p>
+                </div>
+
+                <div class="stats-grid">
+                    <a th:href="@{/clientes}" class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg class="icon icon-white" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3 class="stat-label">Clientes</h3>
+                        <p class="stat-value" th:text="${totalClientes}">0</p>
+                    </a>
+
+                    <a th:href="@{/pedidos}" class="stat-card">
+                        <div class="stat-icon green">
+                            <svg class="icon icon-white" viewBox="0 0 24 24" width="24" height="24">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="stat-label">Pedidos</h3>
+                        <p class="stat-value" th:text="${totalPedidos}">0</p>
+                    </a>
+
+                    <a th:href="@{/productos}" class="stat-card">
+                        <div class="stat-icon purple">
+                            <svg class="icon icon-white" viewBox="0 0 24 24" width="24" height="24">
+                            <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h3 class="stat-label">Productos</h3>
+                        <p class="stat-value" th:text="${totalProductos}">0</p>
+                    </a>
+
+                    <a th:href="@{/proveedores}" class="stat-card">
+                        <div class="stat-icon orange">
+                            <svg class="icon icon-white" viewBox="0 0 24 24" width="24" height="24">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="stat-label">Proveedores</h3>
+                        <p class="stat-value" th:text="${totalProveedores}">0</p>
+                    </a>
+                </div>
+
+                <div class="card card-padding">
+                    <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem">
+                        Accesos Rápidos
+                    </h2>
+                    <div class="quick-access-grid">
+                        <a th:href="@{/clientes}" class="quick-access-card">
+                            <svg class="quick-access-icon" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <p>Gestionar Clientes</p>
+                        </a>
+
+                        <a th:href="@{/pedidos}" class="quick-access-card">
+                            <svg class="quick-access-icon" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            <p>Ver Pedidos</p>
+                        </a>
+
+                        <a th:href="@{/productos}" class="quick-access-card">
+                            <svg class="quick-access-icon" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            <p>Control Inventario</p>
+                        </a>
+
+                        <a th:href="@{/proveedores}" class="quick-access-card">
+                            <svg class="quick-access-icon" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                            </svg>
+                            <p>Administrar Proveedores</p>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
