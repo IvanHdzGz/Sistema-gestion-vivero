@@ -4,7 +4,9 @@
  */
 package com.bets.vivero.controller;
 
+import com.bets.vivero.model.DetallePedido;
 import com.bets.vivero.model.Pedido;
+import com.bets.vivero.model.Producto;
 import com.bets.vivero.repository.ClienteRepository;
 import com.bets.vivero.repository.PedidoRepository;
 import com.bets.vivero.repository.ProductoRepository;
@@ -46,15 +48,17 @@ public class PedidoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarPedido(@ModelAttribute("nuevoPedido") Pedido pedido) {
+    public String guardarPedido(@ModelAttribute Pedido pedido) {
         if (pedido.getDetalles() != null) {
-            pedido.getDetalles().forEach(detalle -> {
+            for (DetallePedido detalle : pedido.getDetalles()) {
                 detalle.setPedido(pedido);
 
-                if (detalle.getProducto() != null) {
-                    detalle.setProducto(detalle.getProducto());
+                // Forzamos a Hibernate a traer el producto real del catálogo
+                if (detalle.getProducto() != null && detalle.getProducto().getProd_id() != null) {
+                    Producto prodExistente = productoRepository.findById(detalle.getProducto().getProd_id()).orElse(null);
+                    detalle.setProducto(prodExistente);
                 }
-            });
+            }
         }
 
         pedidoRepository.save(pedido);

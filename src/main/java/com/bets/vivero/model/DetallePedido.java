@@ -24,14 +24,18 @@ public class DetallePedido {
     private DetallePedidoPK id = new DetallePedidoPK(); // Inicializarla evita NullPointerException
 
     @ManyToOne
-    @MapsId("pedId") // CORREGIDO: Coincide exactamente con 'private Integer pedId' en DetallePedidoPK
+    @MapsId("pedId") // Vinculado a la PK compuesto
     @JoinColumn(name = "ped_id")
     private Pedido pedido;
 
+    // 1. ELIMINAMOS por completo el campo "private Integer prod_id;" que causaba el choque.
     @ManyToOne
-    @MapsId("prodId") // CORREGIDO: Coincide exactamente con 'private Integer prodId' en DetallePedidoPK
+    @MapsId("prodId") // 👈 ¡AGREGA ESTO! Debe coincidir exactamente con el nombre del atributo dentro de tu DetallePedidoPK (ej: prodId)
     @JoinColumn(name = "prod_id")
     private Producto producto;
+
+    @Column(name = "prod_id", insertable = false, updatable = false)
+    private Integer prod_id;
 
     @Column(name = "dp_cantidad")
     private Integer dpCantidad;
@@ -88,4 +92,5 @@ public class DetallePedido {
     public void setDpPreciovta(Double dpPreciovta) {
         this.dpPreciovta = dpPreciovta;
     }
+
 }

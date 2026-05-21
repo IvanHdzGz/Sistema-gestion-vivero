@@ -78,7 +78,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <tr th:each="p : ${productos}">
                                     <td th:text="${p.prod_id}">1</td>
                                     <td>
-                                        <img th:src="${p.prod_imagen != null && !p.prod_imagen.empty} ? ${p.prod_imagen} : '/img/no-image.png'" 
+                                        <img th:src="${p.prod_imgurl != null && !p.prod_imgurl.empty} ? ${p.prod_imgurl} : '/img/no-image.png'" 
                                              alt="Producto" width="40" height="40" style="object-fit: cover; border-radius: 4px;" />
                                     </td>
                                     <td th:text="${p.prod_nombre}">Planta de Sombra</td>
@@ -87,7 +87,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <td th:text="${p.prod_stock}">0</td>
                                     <td>
                                         <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; margin-right: 5px;"
-                                                th:attr="onclick=|openModal('editar', '${p.prod_id}', '${p.prod_nombre}', '${p.categoria?.cat_id}', '${p.prod_precio}', '${p.prod_stock}', '${p.prod_imagen}')|">
+                                                th:attr="onclick=|openModal('editar', '${p.prod_id}', '${p.prod_nombre}', '${p.categoria?.cat_id}', '${p.prod_precio}', '${p.prod_stock}', '${p.prod_imgurl}')|">
                                             Editar
                                         </button>
                                         <a th:href="@{/productos/eliminar/{id}(id=${p.prod_id})}" 
@@ -159,26 +159,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <script>
             function openModal(mode, id, nombre, catId, precio, stock, imagen) {
-            const modal = document.getElementById('productoModal');
-            modal.classList.remove('hidden');
+                const modal = document.getElementById('productoModal');
+                modal.classList.remove('hidden');
 
-            if (mode === 'editar') {
-            document.getElementById('modalTitle').innerText = 'Editar Producto';
-            document.getElementById('prod_id').value = id;
-            document.getElementById('prod_nombre').value = nombre;
-            document.getElementById('categoria').value = catId;
-            document.getElementById('prod_precio').value = precio;
-            document.getElementById('prod_stock').value = stock;
-            document.getElementById('prod_imagen').value = imagen;
-            } else {
-            document.getElementById('modalTitle').innerText = 'Nuevo Producto';
-            document.getElementById('productoForm').reset();
-            document.getElementById('prod_id').value = '';
-            }
+                if (mode === 'editar') {
+                    document.getElementById('modalTitle').innerText = 'Editar Producto';
+                    document.getElementById('prod_id').value = id;
+                    document.getElementById('prod_nombre').value = nombre;
+                    document.getElementById('categoria').value = catId;
+                    document.getElementById('prod_precio').value = precio;
+                    document.getElementById('prod_stock').value = stock;
+                    document.getElementById('prod_imgurl').value = imagen;
+                } else {
+                    document.getElementById('modalTitle').innerText = 'Nuevo Producto';
+                    document.getElementById('productoForm').reset();
+                    document.getElementById('prod_id').value = '';
+                }
             }
 
             function closeModal() {
-            document.getElementById('productoModal').classList.add('hidden');
+                document.getElementById('productoModal').classList.add('hidden');
             }
         </script>
     </body>

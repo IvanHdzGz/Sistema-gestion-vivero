@@ -4,6 +4,7 @@
  */
 package com.bets.vivero.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,7 @@ public class Categoria {
 
     // Relación inversa: Una categoría tiene muchos productos
     @OneToMany(mappedBy = "categoria")
+    @JsonIgnore
     private List<Producto> productos;
 
     // Constructor vacío

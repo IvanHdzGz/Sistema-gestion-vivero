@@ -9,7 +9,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Pedidos - Sistema Vivero</title>
-        <link rel="stylesheet" th:href="@{/src/main/resources/static/styles/styles.css}" />
+        <link rel="stylesheet" th:href="@{/styles/styles.css}" />
     </head>
     <body>
         <div class="main-layout">
@@ -78,18 +78,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     </td>
                                 </tr>
                                 <tr th:each="p : ${pedidos}">
-                                    <td th:text="${p.idPedido}">1</td>
-                                    <td th:text="${p.cliente.cliNombre + ' ' + p.cliente.cliApellido}">Nombre Cliente</td>
-                                    <td th:text="${#dates.format(p.pedFecha, 'dd/MM/yyyy')}">17/05/2026</td>
-                                    <td th:text="${'$' + #numbers.formatDecimal(p.pedTotal, 1, 2)}">$0.00</td>
+                                    <td th:text="${p.ped_id}">1</td>
+                                    <td th:text="${p.cliente.cli_nombre + ' ' + p.cliente.cli_id}">Nombre Cliente</td>
+                                    <td th:text="${#dates.format(p.ped_fecha, 'dd/MM/yyyy')}">17/05/2026</td>
+                                    <td th:text="${'$' + #numbers.formatDecimal(p.ped_total, 1, 2)}">$0.00</td>
                                     <td>
-                                        <span th:text="${p.pedEstado}" 
-                                              th:classappend="${p.pedEstado == 'Completado' ? 'status-success' : (p.pedEstado == 'Cancelado' ? 'status-danger' : 'status-warning')}">
+                                        <span th:text="${p.ped_estado}" 
+                                              th:classappend="${p.ped_estado == 'Completado' ? 'status-success' : (p.ped_estado == 'Cancelado' ? 'status-danger' : 'status-warning')}">
                                             Pendiente
                                         </span>
                                     </td>
                                     <td>
-                                        <a th:href="@{/pedidos/eliminar/{id}(id=${p.idPedido})}" class="btn-icon text-danger" 
+                                        <a th:href="@{/pedidos/eliminar/{id}(id=${p.ped_id})}" class="btn-icon text-danger" 
                                            onclick="return confirm('¿Estás seguro de eliminar este pedido?');">
                                             Eliminar
                                         </a>
@@ -111,25 +111,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </button>
                 </div>
 
-                <div class="modal-body">
-                    <form th:action="@{/pedidos/guardar}" method="POST" id="pedidoForm">
+                <form th:action="@{/pedidos/guardar}" method="POST" id="pedidoForm">
+
+                    <div class="modal-body">
+                        <input type="hidden" name="usuario.id" value="8" /> 
+
                         <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
                             <div class="form-group">
-                                <label>Cliente</label>
-                                <select name="cliente.idCliente" id="cliente" class="form-select" required>
+                                <label for="cliente">Cliente</label>
+                                <select name="cliente.cli_id" id="cliente" class="form-select" required>
                                     <option value="" disabled selected>Seleccione un cliente</option>
-                                    <option th:each="c : ${clientes}" th:value="${c.idCliente}" th:text="${c.cliNombre + ' ' + c.cliApellido}"></option>
+                                    <option th:each="c : ${clientes}" th:value="${c.cli_id}" th:text="${c.cli_nombre + ' ' + c.cli_apellido}"></option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label>Fecha</label>
-                                <input type="date" name="pedFecha" id="fecha" class="form-input" required />
+                                <label for="fecha">Fecha</label>
+                                <input type="date" name="ped_fecha" id="fecha" class="form-input" required />
                             </div>
 
                             <div class="form-group">
-                                <label>Estado</label>
-                                <select name="pedEstado" id="estado" class="form-select" required>
+                                <label for="estado">Estado</label>
+                                <select name="ped_estado" id="estado" class="form-select" required>
                                     <option value="Pendiente">Pendiente</option>
                                     <option value="En Proceso">En Proceso</option>
                                     <option value="Completado">Completado</option>
@@ -148,105 +151,119 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                             <div id="detallesContainer"></div>
 
-                            <input type="hidden" name="pedTotal" id="inputPedTotal" value="0.0" />
+                            <input type="hidden" name="ped_total" id="inputPedTotal" value="0.0" />
                             <div class="pedido-detalle-total" id="totalContainer" style="display: none; justify-content: space-between; font-weight: bold; font-size: 1.25rem;">
                                 <span>Total del Pedido:</span>
                                 <span class="total-amount" id="totalAmount">$0.00</span>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar</button>
-                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                    </div>
+
+                </form> 
             </div>
         </div>
+    </div>
 
-        <script th:inline="javascript">
-            let detalleIndex = 0;
-            // Inyectamos la lista de productos y sus precios desde Thymeleaf para el uso en JS
-            const listaProductos = /*[[${productos}]]*/ [];
+    <script th:inline="javascript">
+        let detalleIndex = 0;
+        // Inyectamos la lista de productos y sus precios desde Thymeleaf para el uso en JS
+        const listaProductos = /*[[${productos}]]*/ [];
 
-            function openModal() {
-                document.getElementById('pedidoModal').classList.remove('hidden');
-                document.getElementById('fecha').valueToDate = new Date();
+        function openModal() {
+            // 1. Removemos la clase hidden para que el modal sea visible
+            document.getElementById('pedidoModal').classList.remove('hidden');
+
+            // 2. Obtenemos la fecha de hoy en formato YYYY-MM-DD de forma limpia
+            const hoy = new Date();
+            const fechaFormateada = hoy.toISOString().split('T')[0];
+
+            // 3. Asignamos el valor correcto usando .value
+            const campoFecha = document.getElementById('fecha');
+            if (campoFecha) {
+                campoFecha.value = fechaFormateada;
             }
+        }
 
-            function closeModal() {
-                document.getElementById('pedidoModal').classList.add('hidden');
-                document.getElementById('detallesContainer').innerHTML = '';
-                detalleIndex = 0;
-                calcularTotal();
+        function closeModal() {
+            document.getElementById('pedidoModal').classList.add('hidden');
+            document.getElementById('detallesContainer').innerHTML = '';
+            detalleIndex = 0;
+            calcularTotal();
+        }
+
+        function agregarDetalle() {
+            const container = document.getElementById('detallesContainer');
+            document.getElementById('totalContainer').style.display = 'flex';
+            document.getElementById('btnGuardar').removeAttribute('disabled');
+
+            let options = '<option value="" disabled selected>Seleccione producto</option>';
+            listaProductos.forEach(p => {
+                // Se corrigió a prodPrecio y prodNombre basados en tu entidad Producto
+                options += `<option value="${p.prod_id}" data-precio="${p.prod_precio}">${p.prod_nombre} (-$${p.prod_precio})</option>`;
+            });
+
+            const htmlFila = `
+  <div class="form-grid fila-detalle" id="fila-${detalleIndex}" style="grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; margin-bottom: 0.5rem; align-items: center;">
+    <div class="form-group">
+      <select name="detalles[${detalleIndex}].producto.prod_id" class="form-select select-producto" onchange="actualizarPrecio(${detalleIndex})" required>
+        ${options}
+      </select>
+    </div>
+    <div class="form-group">
+      <input type="number" name="detalles[${detalleIndex}].dpCantidad" class="form-input input-cantidad" min="1" value="1" oninput="calcularTotal()" required />
+    </div>
+    <div class="form-group">
+      <input type="number" name="detalles[${detalleIndex}].dpPreciovta" class="form-input input-precio" step="0.01" readonly />
+    </div>
+    <button type="button" class="text-danger" style="background:none; border:none; cursor:pointer;" onclick="eliminarFila(${detalleIndex})">✕</button>
+  </div>
+`;
+
+            container.insertAdjacentHTML('beforeend', htmlFila);
+            detalleIndex++;
+        }
+
+        function actualizarPrecio(index) {
+            const fila = document.getElementById(`fila-${index}`);
+            const select = fila.querySelector('.select-producto');
+            const precioInput = fila.querySelector('.input-precio');
+            const precioSeleccionado = select.options[select.selectedIndex].getAttribute('data-precio');
+
+            precioInput.value = precioSeleccionado;
+            calcularTotal();
+        }
+
+        function eliminarFila(index) {
+            const fila = document.getElementById(`fila-${index}`);
+            fila.remove();
+            calcularTotal();
+
+            // AQUÍ SE CORRIGIÓ EL ESPACIO EN BLANCO: "filasRestantes"
+            const filasRestantes = document.querySelectorAll('.fila-detalle');
+            if (filasRestantes.length === 0) {
+                document.getElementById('totalContainer').style.display = 'none';
+                document.getElementById('btnGuardar').setAttribute('disabled', 'true');
             }
+        }
 
-            function agregarDetalle() {
-                const container = document.getElementById('detallesContainer');
-                document.getElementById('totalContainer').style.display = 'flex';
-                document.getElementById('btnGuardar').removeAttribute('disabled');
+        function calcularTotal() {
+            let total = 0;
+            const filas = document.querySelectorAll('.fila-detalle');
 
-                let options = '<option value="" disabled selected>Seleccione producto</option>';
-                listaProductos.forEach(p => {
-                    options += `<option value="${p.idProducto}" data-precio="${p.proPrecio}">${p.proNombre} (-$${p.proPrecio})</option>`;
-                });
+            filas.forEach(fila => {
+                const cantidad = parseFloat(fila.querySelector('.input-cantidad').value) || 0;
+                const precio = parseFloat(fila.querySelector('.input-precio').value) || 0;
+                total += (cantidad * precio);
+            });
 
-                const htmlFila = `
-              <div class="form-grid fila-detalle" id="fila-${detalleIndex}" style="grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; margin-bottom: 0.5rem; align-items: center;">
-                <div class="form-group">
-                  <select name="detalles[${detalleIndex}].producto.idProducto" class="form-select select-producto" onchange="actualizarPrecio(${detalleIndex})" required>
-                    ${options}
-                  </select>
-                </div>
-                <div class="form-group">
-                  <input type="number" name="detalles[${detalleIndex}].detCantidad" class="form-input input-cantidad" min="1" value="1" oninput="calcularTotal()" required />
-                </div>
-                <div class="form-group">
-                  <input type="number" name="detalles[${detalleIndex}].detPrecio" class="form-input input-precio" step="0.01" readonly />
-                </div>
-                <button type="button" class="text-danger" style="background:none; border:none; cursor:pointer;" onclick="eliminarFila(${detalleIndex})">✕</button>
-              </div>
-            `;
-
-                container.insertAdjacentHTML('beforeend', htmlFila);
-                detalleIndex++;
-            }
-
-            function actualizarPrecio(index) {
-                const fila = document.getElementById(`fila-${index}`);
-                const select = fila.querySelector('.select-producto');
-                const precioInput = fila.querySelector('.input-precio');
-                const precioSeleccionado = select.options[select.selectedIndex].getAttribute('data-precio');
-
-                precioInput.value = precioSeleccionado;
-                calcularTotal();
-            }
-
-            function eliminarFila(index) {
-                const fila = document.getElementById(`fila-${index}`);
-                fila.remove();
-                calcularTotal();
-
-                const filas restantes = document.querySelectorAll('.fila-detalle');
-                if (filasRestantes.length === 0) {
-                    document.getElementById('totalContainer').style.display = 'none';
-                    document.getElementById('btnGuardar').setAttribute('disabled', 'true');
-                }
-            }
-
-            function calcularTotal() {
-                let total = 0;
-                const filas = document.querySelectorAll('.fila-detalle');
-
-                filas.forEach(fila => {
-                    const cantidad = parseFloat(fila.querySelector('.input-cantidad').value) || 0;
-                    const precio = parseFloat(fila.querySelector('.input-precio').value) || 0;
-                    total += (cantidad * precio);
-                });
-
-                document.getElementById('totalAmount').innerText = `$${total.toFixed(2)}`;
-                document.getElementById('inputPedTotal').value = total.toFixed(2);
-            }
-        </script>
-    </body>
+            document.getElementById('totalAmount').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('inputPedTotal').value = total.toFixed(2);
+        }
+    </script>
+</body>
 </html>

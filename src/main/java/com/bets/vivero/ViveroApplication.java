@@ -13,6 +13,7 @@ public class ViveroApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ViveroApplication.class, args);
+        
     }
 /*
     @Bean

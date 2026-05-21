@@ -18,6 +18,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -39,7 +40,8 @@ public class Pedido {
     @JoinColumn(name = "cli_id", nullable = false)
     private Cliente cliente;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ped_fecha;
 
     @Column(name = "ped_estado", length = 50)
