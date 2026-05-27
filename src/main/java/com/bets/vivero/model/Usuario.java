@@ -36,7 +36,7 @@ public class Usuario {
     @Column(name = "usu_apellido")
     private String apellido;
 
-    // --- GETTERS Y SETTERS ---
+    // Getters y Setters
     public Integer getId() {
         return id;
     }

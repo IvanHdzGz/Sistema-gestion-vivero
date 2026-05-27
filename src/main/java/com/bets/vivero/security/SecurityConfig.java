@@ -29,12 +29,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/styles/**", "/img/**", "/login").permitAll()
+                .requestMatchers("/styles/**", "/img/**", "/login", "/registro").permitAll()
                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/dashboard", true) // Te manda aquí si todo es correcto
+                .defaultSuccessUrl("/dashboard", true)
                 .permitAll()
                 )
                 .logout(logout -> logout
@@ -45,4 +45,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

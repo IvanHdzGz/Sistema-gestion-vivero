@@ -34,12 +34,14 @@ public class ProveedorController {
         return "proveedores";
     }
 
+    // Guardar el proveedor
     @PostMapping("/guardar")
     public String guardarProveedor(@ModelAttribute("nuevoProveedor") Proveedor proveedor) {
         proveedorRepository.save(proveedor);
         return "redirect:/proveedores";
     }
 
+    // Eliminar el proveedor
     @GetMapping("/eliminar/{id}")
     public String eliminarProveedor(@PathVariable("id") Integer id) {
         proveedorRepository.deleteById(id);

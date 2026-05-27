@@ -36,7 +36,7 @@ public class LoginController {
     public String login() {
         return "login";
     }
-
+    
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         // Obtenemos los conteos totales directamente desde la base de datos MySQL

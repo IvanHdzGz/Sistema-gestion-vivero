@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return User.builder()
                 .username(usuario.getEmail())
                 .password(usuario.getPswd()) // El hash BCrypt de tu columna 'usu_pswd'
-                .roles("USER") // Rol por defecto para habilitar el acceso
+                .roles("USER") 
                 .build();
     }
 }

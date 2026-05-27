@@ -36,6 +36,7 @@ public class PedidoController {
     @Autowired
     private ProductoRepository productoRepository;
 
+    
     @GetMapping
     public String listarPedidos(Model model) {
         // Llenamos todas las entidades necesarias para los combos y alertas del HTML
@@ -47,6 +48,7 @@ public class PedidoController {
         return "pedidos";
     }
 
+    // Guardar el pedido
     @PostMapping("/guardar")
     public String guardarPedido(@ModelAttribute Pedido pedido) {
         if (pedido.getDetalles() != null) {
@@ -65,6 +67,7 @@ public class PedidoController {
         return "redirect:/pedidos";
     }
 
+    // Eliminar el pedido
     @GetMapping("/eliminar/{id}")
     public String eliminarPedido(@PathVariable("id") Integer id) {
         pedidoRepository.deleteById(id);

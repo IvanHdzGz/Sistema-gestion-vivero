@@ -30,6 +30,7 @@ public class DetallePedidoPK implements Serializable {
         this.prodId = prodId;
     }
 
+    // Getters
     public Integer getPedId() {
         return pedId;
     }
@@ -37,7 +38,8 @@ public class DetallePedidoPK implements Serializable {
     public Integer getProdId() {
         return prodId;
     }
-
+    
+    // Setters
     public void setPedId(Integer pedId) {
         this.pedId = pedId;
     }

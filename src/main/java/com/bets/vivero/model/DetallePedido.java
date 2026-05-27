@@ -28,9 +28,8 @@ public class DetallePedido {
     @JoinColumn(name = "ped_id")
     private Pedido pedido;
 
-    // 1. ELIMINAMOS por completo el campo "private Integer prod_id;" que causaba el choque.
     @ManyToOne
-    @MapsId("prodId") // 👈 ¡AGREGA ESTO! Debe coincidir exactamente con el nombre del atributo dentro de tu DetallePedidoPK (ej: prodId)
+    @MapsId("prodId")
     @JoinColumn(name = "prod_id")
     private Producto producto;
 
@@ -43,7 +42,7 @@ public class DetallePedido {
     @Column(name = "dp_preciovta")
     private Double dpPreciovta;
 
-    // --- EL SETTER CORREGIDO PARA LLAVE COMPUESTA ---
+    // Setter de la llave compuesta
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
         if (pedido != null) {
@@ -52,7 +51,7 @@ public class DetallePedido {
         }
     }
 
-    // --- OTROS GETTERS Y SETTERS ---
+    // Getters
     public DetallePedidoPK getId() {
         return id;
     }
@@ -74,6 +73,7 @@ public class DetallePedido {
 
     }
 
+    // Setters
     public void setId(DetallePedidoPK id) {
         this.id = id;
     }

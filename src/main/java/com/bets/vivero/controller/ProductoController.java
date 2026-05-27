@@ -30,7 +30,7 @@ public class ProductoController {
     @Autowired
     private ICategoriaService categoriaService;
 
-    // 1. LISTAR PRODUCTOS Y LLENAR FORMULARIOS
+    // Listar los productos y llenar formularios
     @GetMapping
     public String listarProductos(Model model) {
         // Enviamos la lista de productos reales a la tabla
@@ -45,7 +45,7 @@ public class ProductoController {
         return "productos"; // Busca productos.html en templates
     }
 
-    // 2. GUARDAR / ACTUALIZAR PRODUCTO
+    // Guardar o Actualizar producto
     @PostMapping("/guardar")
     public String guardarProducto(@ModelAttribute("productoObj") Producto producto) {
         // Spring Data JPA detecta automáticamente si el prod_id ya existe:
@@ -54,7 +54,7 @@ public class ProductoController {
         return "redirect:/productos"; // Recarga la pantalla para ver los cambios
     }
 
-    // 3. ELIMINAR PRODUCTO
+    // Eliminar producto
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable("id") Integer id) {
         productoService.eliminarProducto(id);
